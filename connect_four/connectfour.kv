@@ -13,8 +13,6 @@
       Translate:
         xy:self.pos
 <ConnectFour>:
-  col0:col0
-  col1:col1
   GridLayout:
     pos:0,root.height-self.height
     pos_hint:{}
@@ -41,13 +39,25 @@
       size:78,root.height
       pos:248,0
       Column:
-        id:col0
+        col_no:0
   Widget:
     RelativeLayout:
       size:78,root.height
       pos:248+78,0
       Column:
-        id:col1
+        col_no:1
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78*2,0
+      Column:
+        col_no:2
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78*3,0
+      Column:
+        col_no:3
   #BoxLayout:
   #  size:root.height-248,root.height
   #  pos:248,root.height-self.height

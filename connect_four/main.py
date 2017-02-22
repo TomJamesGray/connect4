@@ -12,6 +12,17 @@ from kivy.properties import NumericProperty,ListProperty,DictProperty
 
 global connectFourGame
 
+def get_first_available(col):
+    """
+    Returns the index of the first space in a list that is 0,
+    returns -1 if the value isn't found as False can evaluate
+    to 0
+    """
+    for i in range(len(col)):
+        if col[i] == 0:
+            return i
+    return False
+
 class Player(object):
     def __init__(self,name,col,point_score):
         self.name = name
@@ -23,19 +34,16 @@ class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
     players = ListProperty([Player("1",(1,0,0),1),Player("2",(1,1,0),-1)])
     cur_player = NumericProperty(0)
-    def get_first_space(col):
-        """
-        Returns the index of the first space in a list that is 0
-        """
-        for i in range(len(col)):
-            if col[i] == 0:
-                return i
-        return False
 
     def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
-        self.board[col_no][ConnectFour.get_first_space(
-            self.board[col_no])] = self.players[self.cur_player].point_score
+        space_index = get_first_available(self.board[col_no])
+        print(space_index)
+        if space_index == False and isinstance(space_index,bool):
+            print("Move can't be made")
+            return False
+        self.board[col_no][space_index] = self.players[
+                self.cur_player].point_score
         print("Board after move: {}".format(self.board))
 
         col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
@@ -67,7 +75,8 @@ class ConnectFourApp(App):
         global connectFourGame
         connectFourGame = ConnectFour()
         inspector.create_inspector(Window,connectFourGame)
-        Window.size=(800,600)
+        #Window.clearcolor=(1,1,1,1)
+        Window.size=(800,500)
         return connectFourGame
 
 def main():

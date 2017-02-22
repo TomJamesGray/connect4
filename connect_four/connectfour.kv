@@ -1,23 +1,23 @@
 
-<Menu>:
+<ConnectFour>:
   GridLayout:
+    pos:0,root.height-self.height
+    pos_hint:{}
     rows:3
     cols:2
-    cols_minimum:{0:120,1:180}
+    height:60
+    cols_minimum:{0:120,1:120}
+    row_default_height:30
+    row_force_default:True
     Label:
-      text: "Player 1\nName"
-      multiline:True
+      text: "Player 1 Name"
       font_size:"12sp"
     TextInput:
       multiline: False
       font_size:"14sp"
     Label:
-      text: "Player 2\nName"
-      multiline:True
+      text: "Player 2 Name"
       font_size:"12sp"
     TextInput:
       multiline: False
       font_size:"14sp"
-
-<ConnectFour>:
-  Menu:

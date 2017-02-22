@@ -1,9 +1,11 @@
 import kivy
+from kivy.config import Config
+Config.set('graphics','resizable',0)
 from kivy.app import App
 from kivy.core.window import Window
-from kivy.config import Config
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
+from kivy.modules import inspector
 
 class ConnectFour(Widget):
     pass
@@ -13,9 +15,9 @@ class Menu(Widget):
 
 class ConnectFourApp(App):
     def build(self):
-        return ConnectFour()
+        a = ConnectFour()
+        inspector.create_inspector(Window,a)
+        return a
 
 def main():
-    Config.set("graphics","width","800")
-    Config.set("graphics","height","600")
     ConnectFourApp().run()

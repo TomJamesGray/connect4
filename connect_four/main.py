@@ -23,11 +23,12 @@ class ConnectFour(Widget):
                 return i
         return False
 
-    def make_move(self,col_no):
+    def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
         self.board[col_no][ConnectFour.get_first_space(
             self.board[col_no])] = 1
         print("Board after move: {}".format(self.board))
+        print(col_obj)
     pass
 
 class Column(Widget):
@@ -36,7 +37,8 @@ class Column(Widget):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):
             print("Move on Column: {}".format(self.col_no))
-            connectFourGame.make_move(self.col_no)
+            print(self)
+            connectFourGame.make_move(self.col_no,self)
 
 class ConnectFourApp(App):
     def build(self):

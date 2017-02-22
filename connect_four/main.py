@@ -13,12 +13,10 @@ class ConnectFour(Widget):
     pass
 
 class Column(Widget):
-    def build(self):
-        with self.canvas:
-            Color(1,0,0,1)
-            for i in range(6):
-                Ellipse(pos=(0,i*74),size=(70,70))
-            Translate(xy=self.pos)
+    def on_touch_down(self,touch):
+        if self.collide_point(touch.x,touch.y):
+            print("Ye")
+            print(self.id)
 class ConnectFourApp(App):
     def build(self):
         a = ConnectFour()

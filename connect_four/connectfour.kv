@@ -13,8 +13,8 @@
       Translate:
         xy:self.pos
 <ConnectFour>:
-  col0:column0
-  col1:column1
+  col0:col0
+  col1:col1
   GridLayout:
     pos:0,root.height-self.height
     pos_hint:{}
@@ -36,34 +36,46 @@
     TextInput:
       multiline: False
       font_size:"14sp"
-  BoxLayout:
-    size:root.height-248,root.height
-    pos:248,root.height-self.height
-    spacing:80
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248,0
+      Column:
+        id:col0
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78,0
+      Column:
+        id:col1
+  #BoxLayout:
+  #  size:root.height-248,root.height
+  #  pos:248,root.height-self.height
+  #  spacing:80
 
-    RelativeLayout:
-      size:78,root.height
-      Column:
-        id:column0
-    RelativeLayout:
-      size:78,root.height
-      Column:
-        id:column1
-    RelativeLayout:
-      size:78,root.height
-      Column
-    RelativeLayout:
-      size:78,root.height
-      Column
-    RelativeLayout:
-      size:78,root.height
-      Column
-    RelativeLayout:
-      size:78,root.height
-      Column
-    RelativeLayout:
-      size:78,root.height
-      Column
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column:
+  #      id:column0
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column:
+  #      id:column1
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column
+  #  RelativeLayout:
+  #    size:78,root.height
+  #    Column
    #GridLayout:
     #  pos:240,root-height-self.height
     #  cols:7

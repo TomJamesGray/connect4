@@ -34,6 +34,7 @@ class ConnectFour(Widget):
 
 class Column(Widget):
     col_no = NumericProperty(None)
+    
     def on_touch_down(self,touch):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):

@@ -1,15 +1,26 @@
-
 <Column>:
   Widget:
     canvas:
       Color:
-        rgba:1,0,0,1
+        rgb:1,1,1
       Ellipse:
         size:70,70
         pos:0,0
       Ellipse:
         size:70,70
         pos:0,74
+      Ellipse:
+        size:70,70
+        pos:0,74*2
+      Ellipse:
+        size:70,70
+        pos:0,74*3
+      Ellipse:
+        size:70,70
+        pos:0,74*4
+      Ellipse:
+        size:70,70
+        pos:0,74*5
       Translate:
         xy:self.pos
 <ConnectFour>:
@@ -34,6 +45,7 @@
     TextInput:
       multiline: False
       font_size:"14sp"
+  #
   Widget:
     RelativeLayout:
       size:78,root.height
@@ -58,6 +70,24 @@
       pos:248+78*3,0
       Column:
         col_no:3
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78*4,0
+      Column:
+        col_no:4
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78*5,0
+      Column:
+        col_no:5
+  Widget:
+    RelativeLayout:
+      size:78,root.height
+      pos:248+78*6,0
+      Column:
+        col_no:6
   #BoxLayout:
   #  size:root.height-248,root.height
   #  pos:248,root.height-self.height

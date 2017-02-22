@@ -8,12 +8,21 @@ from kivy.uix.widget import Widget
 from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import *
-from kivy.properties import NumericProperty,ListProperty
+from kivy.properties import NumericProperty,ListProperty,DictProperty
 
 global connectFourGame
 
+class Player(object):
+    def __init__(self,name,col,point_score):
+        self.name = name
+        self.col = col
+        self.point_score = point_score
+
+
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
+    players = ListProperty([Player("1",(1,0,0),1),Player("2",(1,1,0),-1)])
+    cur_player = NumericProperty(0)
     def get_first_space(col):
         """
         Returns the index of the first space in a list that is 0
@@ -26,10 +35,11 @@ class ConnectFour(Widget):
     def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
         self.board[col_no][ConnectFour.get_first_space(
-            self.board[col_no])] = 1
+            self.board[col_no])] = self.players[self.cur_player].point_score
         print("Board after move: {}".format(self.board))
 
-        col_obj.redraw(self.board[col_no])
+        col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
+        self.cur_player = int(not self.cur_player)
     pass
 
 class Column(Widget):
@@ -42,14 +52,14 @@ class Column(Widget):
             print(self)
             connectFourGame.make_move(self.col_no,self)
 
-    def redraw(self,col_vals):
+    def redraw(self,col_vals,cols):
         self.canvas.clear()
         with self.canvas:
             for i,space in enumerate(col_vals):
                 if space == 0:
                     Color(1,1,1)
                 else:
-                    Color(1,1,0)
+                    Color(*(cols[str(space)]))
                 Ellipse(pos=(0,74*i),size=(70,70))
 
 class ConnectFourApp(App):

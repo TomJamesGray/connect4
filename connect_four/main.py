@@ -44,8 +44,12 @@ class Column(Widget):
     def redraw(self,col_vals):
         self.canvas.clear()
         with self.canvas:
-            Color(1.,1.,0)
-            Rectangle(pos=(10,10),size=(50,50))
+            for i,space in enumerate(col_vals):
+                if space == 0:
+                    Color(1,1,1)
+                else:
+                    Color(1,1,0)
+                Ellipse(pos=(0,74*i),size=(70,70))
 
 class ConnectFourApp(App):
     def build(self):

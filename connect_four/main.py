@@ -28,7 +28,8 @@ class ConnectFour(Widget):
         self.board[col_no][ConnectFour.get_first_space(
             self.board[col_no])] = 1
         print("Board after move: {}".format(self.board))
-        print(col_obj)
+
+        col_obj.redraw(self.board[col_no])
     pass
 
 class Column(Widget):
@@ -39,6 +40,12 @@ class Column(Widget):
             print("Move on Column: {}".format(self.col_no))
             print(self)
             connectFourGame.make_move(self.col_no,self)
+
+    def redraw(self,col_vals):
+        self.canvas.clear()
+        with self.canvas:
+            Color(1.,1.,0)
+            Rectangle(pos=(10,10),size=(50,50))
 
 class ConnectFourApp(App):
     def build(self):

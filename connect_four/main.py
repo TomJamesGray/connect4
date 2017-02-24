@@ -27,7 +27,7 @@ def get_n_by_n(a,top_x,top_y,n):
     out = []
     cols = a[top_x:top_x+n]
     for col in cols:
-        out.append(col[top_y:top+n])
+        out.append(col[top_y:top_y+n])
 
     return out
 
@@ -55,6 +55,7 @@ class ConnectFour(Widget):
         print("Board after move: {}".format(self.board))
 
         col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
+        print(self.check_win())
         if self.check_win():
             print("Player {} won".format(self.cur_player))
             return True
@@ -64,7 +65,40 @@ class ConnectFour(Widget):
         """
         Check for wins by using a 4x4 box and moving that around
         """
-        pass
+        for top_y in range(3):
+            for top_x in range(4):
+                to_check = get_n_by_n(self.board,top_x,top_y,4)
+                row_check = [0]*4
+                #Left to right and right to left diagonal check
+                diag_check = [0]*2
+                #Check columns
+                for y,col in enumerate(to_check):
+                    #Calculate scores of rows
+                    for x,space in enumerate(col):
+                        row_check[x] += space
+                        if x == y:
+                            diag_check[0] += space
+                        if x+y == 4:
+                            diag_check[1] += space
+
+                    if sum(col) == 4:
+                        return self.players[0]
+                    elif sum(col) == -4:
+                        return self.players[1]
+
+                #Check row_check scores
+                for row in row_check:
+                    if row == 4:
+                        return self.players[0]
+                    elif row == -4:
+                        return self.players[1]
+
+                for diag in diag_check:
+                    if diag == 4:
+                        return self.players[0]
+                    elif row == -4:
+                        return self.players[1]
+        return False
     pass
 
 class Column(Widget):

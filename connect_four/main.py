@@ -23,6 +23,14 @@ def get_first_available(col):
             return i
     return False
 
+def get_n_by_n(a,top_x,top_y,n):
+    out = []
+    cols = a[top_x:top_x+n]
+    for col in cols:
+        out.append(col[top_y:top+n])
+
+    return out
+
 class Player(object):
     def __init__(self,name,col,point_score):
         self.name = name
@@ -47,7 +55,16 @@ class ConnectFour(Widget):
         print("Board after move: {}".format(self.board))
 
         col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
+        if self.check_win():
+            print("Player {} won".format(self.cur_player))
+            return True
         self.cur_player = int(not self.cur_player)
+    
+    def check_win(self):
+        """
+        Check for wins by using a 4x4 box and moving that around
+        """
+        pass
     pass
 
 class Column(Widget):

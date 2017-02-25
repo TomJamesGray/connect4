@@ -1,5 +1,7 @@
 <Column>:
   Widget:
+    #size:78,70*6+8*5
+    canvas.before:
     canvas:
       Color:
         rgb:1,1,1
@@ -8,19 +10,19 @@
         pos:0,0
       Ellipse:
         size:70,70
-        pos:0,74
+        pos:0,78
       Ellipse:
         size:70,70
-        pos:0,74*2
+        pos:0,78*2
       Ellipse:
         size:70,70
-        pos:0,74*3
+        pos:0,78*3
       Ellipse:
         size:70,70
-        pos:0,74*4
+        pos:0,78*4
       Ellipse:
         size:70,70
-        pos:0,74*5
+        pos:0,78*5
       Translate:
         xy:self.pos
 <ConnectFour>:
@@ -30,7 +32,7 @@
     rows:3
     cols:2
     height:60
-    cols_minimum:{0:120,1:120}
+    cols_minimum:{0:110,1:120}
     row_default_height:30
     row_force_default:True
     Label:
@@ -47,78 +49,54 @@
       font_size:"14sp"
   #
   Widget:
+    size:root.width-235,root.height
+    pos:235,0
+    canvas:
+      Color:
+        rgb:25/255,71/255,117/255
+      Rectangle:
+        size:self.size
+        pos:self.pos
+  
+  Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248,0
+      size:78,460
+      pos:248,(root.height-self.height)/2
       Column:
         col_no:0
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78,0
+      size:78,460
+      pos:248+78,(root.height-self.height)/2
       Column:
         col_no:1
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78*2,0
+      size:78,460
+      pos:248+78*2,(root.height-self.height)/2
       Column:
         col_no:2
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78*3,0
+      size:78,460
+      pos:248+78*3,(root.height-self.height)/2
       Column:
         col_no:3
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78*4,0
+      size:78,460
+      pos:248+78*4,(root.height-self.height)/2
       Column:
         col_no:4
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78*5,0
+      size:78,460
+      pos:248+78*5,(root.height-self.height)/2
       Column:
         col_no:5
   Widget:
     RelativeLayout:
-      size:78,root.height
-      pos:248+78*6,0
+      size:78,460
+      pos:248+78*6,(root.height-self.height)/2
       Column:
         col_no:6
-  #BoxLayout:
-  #  size:root.height-248,root.height
-  #  pos:248,root.height-self.height
-  #  spacing:80
-
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column:
-  #      id:column0
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column:
-  #      id:column1
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column
-  #  RelativeLayout:
-  #    size:78,root.height
-  #    Column
-   #GridLayout:
-    #  pos:240,root-height-self.height
-    #  cols:7
-    #  rows:1
-    #  Column
-    

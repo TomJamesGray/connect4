@@ -122,7 +122,7 @@ class Column(Widget):
                     Color(1,1,1)
                 else:
                     Color(*(cols[str(space)]))
-                Ellipse(pos=(0,74*i),size=(70,70))
+                Ellipse(pos=(0,78*i),size=(70,70))
 
 class ConnectFourApp(App):
     def build(self):

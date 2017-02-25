@@ -5,6 +5,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
+from kivy.uix.button import Button
 from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
@@ -58,8 +59,18 @@ class ConnectFour(Widget):
         col_obj.redraw(self.board[col_no],{"1":self.players[0].col,"-1":self.players[1].col})
         print(self.check_win())
         if self.check_win():
-            Popup(title="Game Finished",content=Label(text="{} won".format(
-                self.players[self.cur_player].name,size=(400,400)))).open()
+            popup_content = BoxLayout(orientation="vertical",size=(250,200))
+            dismiss_btn = Button(size_hint=(1,0.3),text="Dismiss")
+
+            popup_content.add_widget(Label(size_hint=(1,0.7),text="Player {} won".format(
+                self.players[self.cur_player].name)))
+            popup_content.add_widget(dismiss_btn)
+
+            popup = Popup(title="Game Finished",size=(250,200),
+                    size_hint=(None,None),content=popup_content)
+            dismiss_btn.bind(on_press=popup.dismiss)
+            popup.open()
+
             print("Player {} won".format(self.cur_player))
             return True
         self.cur_player = int(not self.cur_player)

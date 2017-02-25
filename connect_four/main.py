@@ -41,7 +41,7 @@ class Player(object):
 
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
-    players = ListProperty([Player("1",(1,0,0),1),Player("2",(1,1,0),-1)])
+    players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
 
     def make_move(self,col_no,col_obj):
@@ -55,7 +55,7 @@ class ConnectFour(Widget):
                 self.cur_player].point_score
         print("Board after move: {}".format(self.board))
 
-        col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
+        col_obj.redraw(self.board[col_no],{"1":self.players[0].col,"-1":self.players[1].col})
         print(self.check_win())
         if self.check_win():
             Popup(title="Game Finished",content=Label(text="{} won".format(

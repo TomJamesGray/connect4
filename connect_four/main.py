@@ -7,6 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.popup import Popup
 from kivy.graphics import *
 from kivy.properties import NumericProperty,ListProperty,DictProperty
 
@@ -57,6 +58,8 @@ class ConnectFour(Widget):
         col_obj.redraw(self.board[col_no],{"1":(1,0,0),"-1":(1,1,0)})
         print(self.check_win())
         if self.check_win():
+            Popup(title="Game Finished",content=Label(text="{} won".format(
+                self.players[self.cur_player].name,size=(400,400)))).open()
             print("Player {} won".format(self.cur_player))
             return True
         self.cur_player = int(not self.cur_player)
@@ -125,7 +128,7 @@ class ConnectFourApp(App):
     def build(self):
         global connectFourGame
         connectFourGame = ConnectFour()
-        inspector.create_inspector(Window,connectFourGame)
+        #inspector.create_inspector(Window,connectFourGame)
         #Window.clearcolor=(1,1,1,1)
         Window.size=(800,500)
         return connectFourGame

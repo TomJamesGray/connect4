@@ -81,7 +81,7 @@ class ConnectFour(Widget):
                         row_check[x] += space
                         if x == y:
                             diag_check[0] += space
-                        if x+y == 4:
+                        if x+y == 3:
                             diag_check[1] += space
 
                     if sum(col) == 4:
@@ -99,7 +99,7 @@ class ConnectFour(Widget):
                 for diag in diag_check:
                     if diag == 4:
                         return self.players[0]
-                    elif row == -4:
+                    elif diag == -4:
                         return self.players[1]
         return False
     pass

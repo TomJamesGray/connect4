@@ -41,10 +41,12 @@ class Player(object):
         self.name = name
         self.col = col
         self.point_score = point_score
+        self.games_won = 0
 
 
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
+    columns = ListProperty(None)
     #players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
     player_1_name = ObjectProperty(None)
@@ -66,20 +68,29 @@ class ConnectFour(Widget):
         print(self.check_win())
         if self.check_win():
             popup_content = BoxLayout(orientation="vertical",size=(250,200))
-            dismiss_btn = Button(size_hint=(1,0.3),text="Dismiss")
+            new_game_btn = Button(size_hint=(1,0.2),text="New Game")
+            reset_btn = Button(size_hint=(1,0.2),text="Reset (New Players)")
 
-            popup_content.add_widget(Label(size_hint=(1,0.7),text="Player {} won".format(
+            popup_content.add_widget(Label(size_hint=(1,0.6),text="Player {} won".format(
                 self.players[self.cur_player].name)))
-            popup_content.add_widget(dismiss_btn)
+            popup_content.add_widget(new_game_btn)
+            popup_content.add_widget(reset_btn)
 
-            popup = Popup(title="Game Finished",size=(250,200),
+            self.popup = Popup(title="Game Finished",size=(250,200),
                     size_hint=(None,None),content=popup_content)
-            dismiss_btn.bind(on_press=popup.dismiss)
-            popup.open()
+            new_game_btn.bind(on_press=self.new_game_handler)
+            reset_btn.bind(on_press=self.popup.dismiss)
+            self.popup.open()
 
             print("Player {} won".format(self.cur_player))
             return True
         self.cur_player = int(not self.cur_player)
+
+    def new_game_handler(self,_):
+        self.popup.dismiss()
+        self.players[self.cur_player].games_won += 1
+        self.board = [[0]*6 for x in range(7)]
+        
 
     def start_game(self):
         #Create Players

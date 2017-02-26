@@ -143,6 +143,8 @@ class ConnectFour(Widget):
         """
         if hasattr(self,'popup'):
             self.popup.dismiss()
+        if self.players == []:
+            return False
         #Reset Board
         self.board = [[0]*6 for x in range(7)]
         for col in self.game_board.columns:

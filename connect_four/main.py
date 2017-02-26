@@ -76,9 +76,7 @@ class ConnectFour(Widget):
         if self.players == []:
             #Players haven't been initialised
             return False
-        print("make_move: {}".format(col_no))
         space_index = get_first_available(self.board[col_no])
-        print(space_index)
         if space_index == False and isinstance(space_index,bool):
             print("Move can't be made")
             return False
@@ -87,7 +85,6 @@ class ConnectFour(Widget):
         print("Board after move: {}".format(self.board))
 
         col_obj.redraw(self.board[col_no],{"1":self.players[0].col,"-1":self.players[1].col})
-        print(self.check_win())
         if self.check_win():
             popup_content = BoxLayout(orientation="vertical",size=(250,200))
             new_game_btn = Button(size_hint=(1,0.2),text="New Game")
@@ -104,7 +101,6 @@ class ConnectFour(Widget):
             reset_btn.bind(on_press=self.reset_game_handler)
             self.popup.open()
 
-            print("Player {} won".format(self.cur_player))
             return True
         self.cur_player = int(not self.cur_player)
 
@@ -186,8 +182,6 @@ class ConnectFour(Widget):
     pass
 
 class Column(Widget):
-    col_no = NumericProperty(None)
-    
     def __init__(self,**kwargs):
         super(Column,self).__init__(**kwargs)
         self.redraw([0]*6,[None])
@@ -195,8 +189,6 @@ class Column(Widget):
     def on_touch_down(self,touch):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):
-            print("Move on Column: {}".format(self.col_no))
-            print(self)
             connectFourGame.make_move(self.col_no,self)
 
     def redraw(self,col_vals,cols):

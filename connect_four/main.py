@@ -48,6 +48,7 @@ class Player(object):
 class GameBoard(Widget):
     def __init__(self,**kwargs):
         super(GameBoard,self).__init__(**kwargs)
+
         self.columns = [None]*7
         for i in range(7):
             container = Widget()
@@ -66,6 +67,7 @@ class ConnectFour(Widget):
     player_1_name = ObjectProperty(None)
     player_2_name = ObjectProperty(None)
     start_game_btn = ObjectProperty(None)
+    game_board = ObjectProperty(None)
 
     def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
@@ -104,7 +106,9 @@ class ConnectFour(Widget):
         self.popup.dismiss()
         self.players[self.cur_player].games_won += 1
         self.board = [[0]*6 for x in range(7)]
-        
+        #Loop through columns in GameBoard and redraw them
+        for col in self.game_board.columns:
+            col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
 
     def start_game(self):
         #Create Players

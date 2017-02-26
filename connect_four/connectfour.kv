@@ -24,6 +24,8 @@
       Translate:
         xy:self.pos
 <ConnectFour>:
+  player_1_name:player_1_name
+  player_2_name:player_2_name
   GridLayout:
     pos:0,root.height-self.height
     pos_hint:{}
@@ -39,12 +41,17 @@
     TextInput:
       multiline: False
       font_size:"14sp"
+      id: player_1_name
     Label:
       text: "Player 2 Name"
       font_size:"12sp"
     TextInput:
       multiline: False
       font_size:"14sp"
+      id: player_2_name
+    Button:
+      text: "Start Game"
+      on_press:app.start_game()
   #
   Widget:
     size:root.width-235,root.height

@@ -10,7 +10,7 @@ from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.graphics import *
-from kivy.properties import NumericProperty,ListProperty,DictProperty
+from kivy.properties import NumericProperty,ListProperty,DictProperty,ObjectProperty
 
 global connectFourGame
 
@@ -33,6 +33,9 @@ def get_n_by_n(a,top_x,top_y,n):
 
     return out
 
+def rgb_max_1(rgb):
+    return tuple([x/255 for x in rgb])
+
 class Player(object):
     def __init__(self,name,col,point_score):
         self.name = name
@@ -42,8 +45,10 @@ class Player(object):
 
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
-    players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
+    #players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
+    player_1_name = ObjectProperty(None)
+    player_2_name = ObjectProperty(None)
 
     def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
@@ -74,7 +79,12 @@ class ConnectFour(Widget):
             print("Player {} won".format(self.cur_player))
             return True
         self.cur_player = int(not self.cur_player)
-    
+
+    def start_game(self):
+        print(self.player_1_name.text)
+        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1),
+                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1)]
+
     def check_win(self):
         """
         Check for wins by using a 4x4 box and moving that around
@@ -139,10 +149,14 @@ class ConnectFourApp(App):
     def build(self):
         global connectFourGame
         connectFourGame = ConnectFour()
+        self.connectFourGame = connectFourGame
         #inspector.create_inspector(Window,connectFourGame)
         #Window.clearcolor=(1,1,1,1)
         Window.size=(800,500)
-        return connectFourGame
+        return self.connectFourGame
+
+    def start_game(self):
+        self.connectFourGame.start_game()
 
 def main():
     ConnectFourApp().run()

@@ -64,6 +64,7 @@ class ConnectFour(Widget):
     columns = ListProperty(None)
     #players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
+    players = ListProperty([])
     player_1_name = ObjectProperty(None)
     player_1_games_won = ObjectProperty(None)
     player_2_name = ObjectProperty(None)
@@ -72,6 +73,9 @@ class ConnectFour(Widget):
     game_board = ObjectProperty(None)
 
     def make_move(self,col_no,col_obj):
+        if self.players == []:
+            #Players haven't been initialised
+            return False
         print("make_move: {}".format(col_no))
         space_index = get_first_available(self.board[col_no])
         print(space_index)
@@ -97,7 +101,7 @@ class ConnectFour(Widget):
             self.popup = Popup(title="Game Finished",size=(250,200),
                     size_hint=(None,None),content=popup_content)
             new_game_btn.bind(on_press=self.new_game_handler)
-            reset_btn.bind(on_press=self.popup.dismiss)
+            reset_btn.bind(on_press=self.reset_game_handler)
             self.popup.open()
 
             print("Player {} won".format(self.cur_player))
@@ -112,6 +116,25 @@ class ConnectFour(Widget):
         #Loop through columns in GameBoard and redraw them
         for col in self.game_board.columns:
             col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
+
+    def reset_game_handler(self,_=None):
+        if hasattr(self,'popup'):
+            self.popup.dismiss()
+        #Reset Board
+        self.board = [[0]*6 for x in range(7)]
+        for col in self.game_board.columns:
+            col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
+        
+        #Re-enable and clear text inputs
+        self.player_1_name.disabled = False
+        self.player_1_name.text = ""
+        self.player_1_games_won.text = "0"
+        self.player_2_name.disabled = False
+        self.player_2_name.text = ""
+        self.player_2_games_won.text = "0"
+        self.start_game_btn.disabled = False
+        self.players = []
+        self.cur_player = 0
 
     def start_game(self):
         #Create Players
@@ -198,6 +221,9 @@ class ConnectFourApp(App):
 
     def start_game(self):
         self.connectFourGame.start_game()
+
+    def restart_game(self):
+        self.connectFourGame.reset_game_handler()
 
 def main():
     ConnectFourApp().run()

@@ -27,6 +27,9 @@ def get_first_available(col):
     return False
 
 def get_n_by_n(a,top_x,top_y,n):
+    """
+    Gets an n by n 2d list from another 2d list
+    """
     out = []
     cols = a[top_x:top_x+n]
     for col in cols:
@@ -46,6 +49,9 @@ class Player(object):
         self.label = label
 
 class GameBoard(Widget):
+    """
+    Container widget for the Columns of the board
+    """
     def __init__(self,**kwargs):
         super(GameBoard,self).__init__(**kwargs)
 
@@ -62,7 +68,6 @@ class GameBoard(Widget):
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])
     columns = ListProperty(None)
-    #players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
     players = ListProperty([])
     player_1_name = ObjectProperty(None)
@@ -73,19 +78,30 @@ class ConnectFour(Widget):
     game_board = ObjectProperty(None)
 
     def make_move(self,col_no,col_obj):
+        """
+        Makes a move on the board. Takes the column number and a
+        reference to the column as paramaters
+        """
         if self.players == []:
             #Players haven't been initialised
             return False
+
         space_index = get_first_available(self.board[col_no])
         if space_index == False and isinstance(space_index,bool):
+            #Column is full up
             print("Move can't be made")
             return False
+        
+        #Set the board element
         self.board[col_no][space_index] = self.players[
                 self.cur_player].point_score
         print("Board after move: {}".format(self.board))
-
+        
+        #Redraw that column with the new values
         col_obj.redraw(self.board[col_no],{"1":self.players[0].col,"-1":self.players[1].col})
+        
         if self.check_win():
+            #Create popup
             popup_content = BoxLayout(orientation="vertical",size=(250,200))
             new_game_btn = Button(size_hint=(1,0.2),text="New Game")
             reset_btn = Button(size_hint=(1,0.2),text="Reset (New Players)")
@@ -102,18 +118,29 @@ class ConnectFour(Widget):
             self.popup.open()
 
             return True
+        #Change the current player
         self.cur_player = int(not self.cur_player)
 
-    def new_game_handler(self,_):
+    def new_game_handler(self,_=None):
+        """
+        Handle the New game button on the win popup, has *optional*
+        parameter as the button instance is by default passed to it
+        """
         self.popup.dismiss()
         self.players[self.cur_player].games_won += 1
         self.players[self.cur_player].label.text = str(self.players[self.cur_player].games_won)
+        #Reset Board
         self.board = [[0]*6 for x in range(7)]
         #Loop through columns in GameBoard and redraw them
         for col in self.game_board.columns:
             col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
 
     def reset_game_handler(self,_=None):
+        """
+        Handle the reset game button on the win popup and main
+        screen, has *optional* parameter as the bytton instance
+        is passed to it
+        """
         if hasattr(self,'popup'):
             self.popup.dismiss()
         #Reset Board
@@ -133,6 +160,9 @@ class ConnectFour(Widget):
         self.cur_player = 0
 
     def start_game(self):
+        """
+        Handles the start game button and creates the player objects
+        """
         #Create Players
         self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1,self.player_1_games_won),
                 Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1,self.player_2_games_won)]

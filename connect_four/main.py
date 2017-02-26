@@ -8,6 +8,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.popup import Popup
 from kivy.graphics import *
 from kivy.properties import NumericProperty,ListProperty,DictProperty,ObjectProperty
@@ -43,6 +44,19 @@ class Player(object):
         self.point_score = point_score
         self.games_won = 0
 
+
+class GameBoard(Widget):
+    def __init__(self,**kwargs):
+        super(GameBoard,self).__init__(**kwargs)
+        self.columns = [None]*7
+        for i in range(7):
+            container = Widget()
+            layout = RelativeLayout(size=(78,460),pos=(248+78*i,20))
+            self.columns[i] = Column()
+            self.columns[i].col_no = i
+            layout.add_widget(self.columns[i])
+            container.add_widget(layout)
+            self.add_widget(container)
 
 class ConnectFour(Widget):
     board = ListProperty([[0]*6 for x in range(7)])

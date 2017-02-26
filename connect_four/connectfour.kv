@@ -55,7 +55,7 @@
       text: "Start Game"
       on_press:app.start_game()
       id: start_game_btn
-  #
+  
   Widget:
     size:root.width-235,root.height
     pos:235,0
@@ -66,45 +66,4 @@
         size:self.size
         pos:self.pos
   
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248,(root.height-self.height)/2
-      Column:
-        col_no:0
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78,(root.height-self.height)/2
-      Column:
-        col_no:1
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78*2,(root.height-self.height)/2
-      Column:
-        col_no:2
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78*3,(root.height-self.height)/2
-      Column:
-        col_no:3
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78*4,(root.height-self.height)/2
-      Column:
-        col_no:4
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78*5,(root.height-self.height)/2
-      Column:
-        col_no:5
-  Widget:
-    RelativeLayout:
-      size:78,460
-      pos:248+78*6,(root.height-self.height)/2
-      Column:
-        col_no:6
+  GameBoard

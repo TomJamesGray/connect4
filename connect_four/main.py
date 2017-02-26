@@ -41,12 +41,11 @@ def rgb_max_1(rgb):
     return tuple([x/255 for x in rgb])
 
 class Player(object):
-    def __init__(self,name,col,point_score,label):
+    def __init__(self,name,col,point_score):
         self.name = name
         self.col = col
         self.point_score = point_score
         self.games_won = 0
-        self.label = label
 
 class GameBoard(Widget):
     """
@@ -71,9 +70,8 @@ class ConnectFour(Widget):
     cur_player = NumericProperty(0)
     players = ListProperty([])
     player_1_name = ObjectProperty(None)
-    player_1_games_won = ObjectProperty(None)
     player_2_name = ObjectProperty(None)
-    player_2_games_won = ObjectProperty(None)
+    games_won_label = ObjectProperty(None)
     start_game_btn = ObjectProperty(None)
     game_board = ObjectProperty(None)
 
@@ -128,7 +126,12 @@ class ConnectFour(Widget):
         """
         self.popup.dismiss()
         self.players[self.cur_player].games_won += 1
-        self.players[self.cur_player].label.text = str(self.players[self.cur_player].games_won)
+        
+        #Update games won string in form "0 v 0"
+        current_str = self.games_won_label.text
+        old_games_won = [int(x.strip()) for x in current_str.split("v")]
+        old_games_won[self.cur_player] = self.players[self.cur_player].games_won
+        self.games_won_label.text = "{} v {}".format(old_games_won[0],old_games_won[1])
         #Reset Board
         self.board = [[0]*6 for x in range(7)]
         #Loop through columns in GameBoard and redraw them
@@ -153,10 +156,8 @@ class ConnectFour(Widget):
         #Re-enable and clear text inputs
         self.player_1_name.disabled = False
         self.player_1_name.text = ""
-        self.player_1_games_won.text = "0"
         self.player_2_name.disabled = False
         self.player_2_name.text = ""
-        self.player_2_games_won.text = "0"
         self.start_game_btn.disabled = False
         self.players = []
         self.cur_player = 0
@@ -166,8 +167,8 @@ class ConnectFour(Widget):
         Handles the start game button and creates the player objects
         """
         #Create Players
-        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1,self.player_1_games_won),
-                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1,self.player_2_games_won)]
+        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1),
+                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1)]
         #Disable text inputs and start game button
         self.player_1_name.disabled = True
         self.player_2_name.disabled = True

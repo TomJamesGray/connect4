@@ -162,6 +162,10 @@ class ConnectFour(Widget):
 class Column(Widget):
     col_no = NumericProperty(None)
     
+    def __init__(self,**kwargs):
+        super(Column,self).__init__(**kwargs)
+        self.redraw([0]*6,[None])
+
     def on_touch_down(self,touch):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):

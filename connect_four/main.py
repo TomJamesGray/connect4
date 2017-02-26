@@ -106,7 +106,7 @@ class ConnectFour(Widget):
             new_game_btn = Button(size_hint=(1,0.2),text="New Game")
             reset_btn = Button(size_hint=(1,0.2),text="Reset (New Players)")
 
-            popup_content.add_widget(Label(size_hint=(1,0.6),text="Player {} won".format(
+            popup_content.add_widget(Label(size_hint=(1,0.6),text="{} won".format(
                 self.players[self.cur_player].name)))
             popup_content.add_widget(new_game_btn)
             popup_content.add_widget(reset_btn)

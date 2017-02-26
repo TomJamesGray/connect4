@@ -38,12 +38,12 @@ def rgb_max_1(rgb):
     return tuple([x/255 for x in rgb])
 
 class Player(object):
-    def __init__(self,name,col,point_score):
+    def __init__(self,name,col,point_score,label):
         self.name = name
         self.col = col
         self.point_score = point_score
         self.games_won = 0
-
+        self.label = label
 
 class GameBoard(Widget):
     def __init__(self,**kwargs):
@@ -65,7 +65,9 @@ class ConnectFour(Widget):
     #players = ListProperty([Player("1",(221/255,63/255,63/255),1),Player("2",(222/255,226/255,55/255),-1)])
     cur_player = NumericProperty(0)
     player_1_name = ObjectProperty(None)
+    player_1_games_won = ObjectProperty(None)
     player_2_name = ObjectProperty(None)
+    player_2_games_won = ObjectProperty(None)
     start_game_btn = ObjectProperty(None)
     game_board = ObjectProperty(None)
 
@@ -105,6 +107,7 @@ class ConnectFour(Widget):
     def new_game_handler(self,_):
         self.popup.dismiss()
         self.players[self.cur_player].games_won += 1
+        self.players[self.cur_player].label.text = str(self.players[self.cur_player].games_won)
         self.board = [[0]*6 for x in range(7)]
         #Loop through columns in GameBoard and redraw them
         for col in self.game_board.columns:
@@ -112,8 +115,8 @@ class ConnectFour(Widget):
 
     def start_game(self):
         #Create Players
-        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1),
-                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1)]
+        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1,self.player_1_games_won),
+                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1,self.player_2_games_won)]
         #Disable text inputs and start game button
         self.player_1_name.disabled = True
         self.player_2_name.disabled = True

@@ -1,13 +1,15 @@
 <ConnectFour>:
   player_1_name:player_1_name
+  player_1_games_won:player_1_games_won
   player_2_name:player_2_name
+  player_2_games_won:player_2_games_won
   start_game_btn:start_game_btn
   game_board:game_board
   
   GridLayout:
     pos:0,root.height-self.height
     pos_hint:{}
-    rows:3
+    rows:5
     cols:2
     height:60
     cols_minimum:{0:110,1:120}
@@ -31,6 +33,21 @@
       text: "Start Game"
       on_press:app.start_game()
       id: start_game_btn
+    Button:
+      text: "Reset Game"
+    Label:
+      text: "Player 1 \nGames won:"
+      font_size:"12sp"
+    Label:
+      text: "0"
+      id:player_1_games_won
+    Label:
+      text: "Player 2 \nGames won:"
+      font_size:"12sp"
+    Label:
+      text: "0"
+      id:player_2_games_won
+
   
   Widget:
     size:root.width-235,root.height

@@ -7,15 +7,18 @@
   game_board:game_board
   
   GridLayout:
-    pos:0,root.height-self.height
+    pos:5,root.height-self.height-10
     pos_hint:{}
     rows:5
     cols:2
+    padding:0,5,0,5
+    spacing:3
     height:60
-    cols_minimum:{0:110,1:120}
+    cols_minimum:{0:110,1:110}
     row_default_height:30
     row_force_default:True
     Label:
+      color:0,0,0,1
       text: "Player 1 Name"
       font_size:"12sp"
     TextInput:
@@ -25,6 +28,7 @@
       id: player_1_name
     Label:
       text: "Player 2 Name"
+      color:0,0,0,1
       font_size:"12sp"
     TextInput:
       multiline: False
@@ -40,15 +44,19 @@
       on_press:app.restart_game()
     Label:
       text: "Player 1 \nGames won:"
+      color:0,0,0,1
       font_size:"12sp"
     Label:
       text: "0"
+      color:0,0,0,1
       id:player_1_games_won
     Label:
       text: "Player 2 \nGames won:"
+      color:0,0,0,1
       font_size:"12sp"
     Label:
       text: "0"
+      color:0,0,0,1
       id:player_2_games_won
 
   

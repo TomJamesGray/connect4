@@ -103,10 +103,10 @@ class ConnectFour(Widget):
         if self.check_win():
             #Create popup
             popup_content = BoxLayout(orientation="vertical",size=(250,200))
-            new_game_btn = Button(size_hint=(1,0.2),text="New Game")
-            reset_btn = Button(size_hint=(1,0.2),text="Reset (New Players)")
+            new_game_btn = Button(size_hint=(1,0.3),text="New Game")
+            reset_btn = Button(size_hint=(1,0.3),text="Reset (New Players)")
 
-            popup_content.add_widget(Label(size_hint=(1,0.6),text="{} won".format(
+            popup_content.add_widget(Label(size_hint=(1,0.4),text="{} won".format(
                 self.players[self.cur_player].name)))
             popup_content.add_widget(new_game_btn)
             popup_content.add_widget(reset_btn)
@@ -226,7 +226,7 @@ class Column(Widget):
         with self.canvas:
             for i,space in enumerate(col_vals):
                 if space == 0:
-                    Color(1,1,1)
+                    Color(0.9,0.9,0.9)
                 else:
                     Color(*(cols[str(space)]))
                 Ellipse(pos=(0,78*i),size=(70,70))
@@ -237,7 +237,7 @@ class ConnectFourApp(App):
         connectFourGame = ConnectFour()
         self.connectFourGame = connectFourGame
         #inspector.create_inspector(Window,connectFourGame)
-        #Window.clearcolor=(1,1,1,1)
+        Window.clearcolor=(0.9,0.9,0.9,1)
         Window.size=(800,500)
         return self.connectFourGame
 

@@ -49,6 +49,7 @@ class ConnectFour(Widget):
     cur_player = NumericProperty(0)
     player_1_name = ObjectProperty(None)
     player_2_name = ObjectProperty(None)
+    start_game_btn = ObjectProperty(None)
 
     def make_move(self,col_no,col_obj):
         print("make_move: {}".format(col_no))
@@ -81,9 +82,13 @@ class ConnectFour(Widget):
         self.cur_player = int(not self.cur_player)
 
     def start_game(self):
-        print(self.player_1_name.text)
+        #Create Players
         self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1),
                 Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1)]
+        #Disable text inputs and start game button
+        self.player_1_name.disabled = True
+        self.player_2_name.disabled = True
+        self.start_game_btn.disabled = True
 
     def check_win(self):
         """

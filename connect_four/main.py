@@ -138,6 +138,8 @@ class ConnectFour(Widget):
         for col in self.game_board.columns:
             col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
 
+        self.cur_player = 0
+
     def reset_game_handler(self,_=None):
         """
         Handle the reset game button on the win popup and main

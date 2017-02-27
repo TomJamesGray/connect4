@@ -15,6 +15,7 @@ from kivy.properties import NumericProperty,ListProperty,DictProperty,ObjectProp
 
 global connectFourGame
 
+
 def get_first_available(col):
     """
     Returns the index of the first space in a list that is 0,
@@ -25,6 +26,7 @@ def get_first_available(col):
         if col[i] == 0:
             return i
     return False
+
 
 def get_n_by_n(a,top_x,top_y,n):
     """
@@ -37,8 +39,10 @@ def get_n_by_n(a,top_x,top_y,n):
 
     return out
 
+
 def rgb_max_1(rgb):
     return tuple([x/255 for x in rgb])
+
 
 class Player(object):
     def __init__(self,name,col,point_score):
@@ -46,6 +50,7 @@ class Player(object):
         self.col = col
         self.point_score = point_score
         self.games_won = 0
+
 
 class GameBoard(Widget):
     """
@@ -57,15 +62,16 @@ class GameBoard(Widget):
         self.columns = [None]*7
         for i in range(7):
             container = Widget()
-            layout = RelativeLayout(size=(78,460),pos=(248+78*i,20))
+            layout = RelativeLayout(size=(78, 460), pos=(248+78*i, 20))
             self.columns[i] = Column()
             self.columns[i].col_no = i
             layout.add_widget(self.columns[i])
             container.add_widget(layout)
             self.add_widget(container)
 
+
 class ConnectFour(Widget):
-    board = ListProperty([[0]*6 for x in range(7)])
+    board = ListProperty([[0]*6 for _ in range(7)])
     columns = ListProperty(None)
     cur_player = NumericProperty(0)
     players = ListProperty([])
@@ -78,48 +84,49 @@ class ConnectFour(Widget):
     def make_move(self,col_no,col_obj):
         """
         Makes a move on the board. Takes the column number and a
-        reference to the column as paramaters
+        reference to the column as parameters
         """
         if self.players == []:
-            #Players haven't been initialised
+            # Players haven't been initialised
             return False
 
         space_index = get_first_available(self.board[col_no])
         if space_index == False and isinstance(space_index,bool):
-            #Column is full up
+            # Column is full up
             print("Move can't be made")
             return False
         
-        #Set the board element
+        # Set the board element
         self.board[col_no][space_index] = self.players[
                 self.cur_player].point_score
         print("Board after move: {}".format(self.board))
         
-        #Redraw that column with the new values
-        col_obj.redraw(self.board[col_no],{"1":self.players[0].col,"-1":self.players[1].col})
+        # Redraw that column with the new values
+        col_obj.redraw(self.board[col_no],
+                       {"1": self.players[0].col, "-1": self.players[1].col})
         
         if self.check_win():
-            #Create popup
-            popup_content = BoxLayout(orientation="vertical",size=(250,200))
-            new_game_btn = Button(size_hint=(1,0.3),text="New Game")
-            reset_btn = Button(size_hint=(1,0.3),text="Reset (New Players)")
+            # Create popup
+            popup_content = BoxLayout(orientation="vertical", size=(250, 200))
+            new_game_btn = Button(size_hint=(1, 0.3), text="New Game")
+            reset_btn = Button(size_hint=(1, 0.3), text="Reset (New Players)")
 
-            popup_content.add_widget(Label(size_hint=(1,0.4),text="{} won".format(
+            popup_content.add_widget(Label(size_hint=(1, 0.4), text="{} won".format(
                 self.players[self.cur_player].name)))
             popup_content.add_widget(new_game_btn)
             popup_content.add_widget(reset_btn)
 
-            self.popup = Popup(title="Game Finished",size=(250,200),
-                    size_hint=(None,None),content=popup_content)
+            self.popup = Popup(title="Game Finished", size=(250, 200),
+                               size_hint=(None, None), content=popup_content)
             new_game_btn.bind(on_press=self.new_game_handler)
             reset_btn.bind(on_press=self.reset_game_handler)
             self.popup.open()
 
             return True
-        #Change the current player
+        # Change the current player
         self.cur_player = int(not self.cur_player)
 
-    def new_game_handler(self,_=None):
+    def new_game_handler(self, _=None):
         """
         Handle the New game button on the win popup, has *optional*
         parameter as the button instance is by default passed to it
@@ -127,20 +134,21 @@ class ConnectFour(Widget):
         self.popup.dismiss()
         self.players[self.cur_player].games_won += 1
         
-        #Update games won string in form "0 v 0"
+        # Update games won string in form "0 v 0"
         current_str = self.games_won_label.text
         old_games_won = [int(x.strip()) for x in current_str.split("v")]
         old_games_won[self.cur_player] = self.players[self.cur_player].games_won
         self.games_won_label.text = "{} v {}".format(old_games_won[0],old_games_won[1])
-        #Reset Board
+        # Reset Board
         self.board = [[0]*6 for x in range(7)]
-        #Loop through columns in GameBoard and redraw them
+        # Loop through columns in GameBoard and redraw them
         for col in self.game_board.columns:
-            col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
+            col.redraw([0]*6,
+                       {"1": self.players[0].col, "-1": self.players[1].col})
 
         self.cur_player = 0
 
-    def reset_game_handler(self,_=None):
+    def reset_game_handler(self, _=None):
         """
         Handle the reset game button on the win popup and main
         screen, has *optional* parameter as the bytton instance
@@ -150,12 +158,13 @@ class ConnectFour(Widget):
             self.popup.dismiss()
         if self.players == []:
             return False
-        #Reset Board
+        # Reset Board
         self.board = [[0]*6 for x in range(7)]
         for col in self.game_board.columns:
-            col.redraw([0]*6,{"1":self.players[0].col,"-1":self.players[1].col})
+            col.redraw([0]*6,
+                       {"1": self.players[0].col, "-1": self.players[1].col})
         
-        #Re-enable and clear text inputs
+        # Re-enable and clear text inputs
         self.player_1_name.disabled = False
         self.player_1_name.text = ""
         self.player_2_name.disabled = False
@@ -169,10 +178,10 @@ class ConnectFour(Widget):
         """
         Handles the start game button and creates the player objects
         """
-        #Create Players
-        self.players = [Player(self.player_1_name.text,rgb_max_1((221,63,63)),1),
-                Player(self.player_2_name.text,rgb_max_1((222,226,55)),-1)]
-        #Disable text inputs and start game button
+        # Create Players
+        self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), 1),
+                        Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), -1)]
+        # Disable text inputs and start game button
         self.player_1_name.disabled = True
         self.player_2_name.disabled = True
         self.start_game_btn.disabled = True
@@ -185,12 +194,12 @@ class ConnectFour(Widget):
             for top_x in range(4):
                 to_check = get_n_by_n(self.board,top_x,top_y,4)
                 row_check = [0]*4
-                #Left to right and right to left diagonal check
+                # Left to right and right to left diagonal check
                 diag_check = [0]*2
-                #Check columns
-                for y,col in enumerate(to_check):
-                    #Calculate scores of rows
-                    for x,space in enumerate(col):
+                # Check columns
+                for y, col in enumerate(to_check):
+                    # Calculate scores of rows
+                    for x, space in enumerate(col):
                         row_check[x] += space
                         if x == y:
                             diag_check[0] += space
@@ -202,7 +211,7 @@ class ConnectFour(Widget):
                     elif sum(col) == -4:
                         return self.players[1]
 
-                #Check row_check scores
+                # Check row_check scores
                 for row in row_check:
                     if row == 4:
                         return self.players[0]
@@ -217,25 +226,27 @@ class ConnectFour(Widget):
         return False
     pass
 
-class Column(Widget):
-    def __init__(self,**kwargs):
-        super(Column,self).__init__(**kwargs)
-        self.redraw([0]*6,[None])
 
-    def on_touch_down(self,touch):
+class Column(Widget):
+    def __init__(self, **kwargs):
+        super(Column, self).__init__(**kwargs)
+        self.redraw([0]*6, [None])
+
+    def on_touch_down(self, touch):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):
             connectFourGame.make_move(self.col_no,self)
 
-    def redraw(self,col_vals,cols):
+    def redraw(self, col_vals, cols):
         self.canvas.clear()
         with self.canvas:
-            for i,space in enumerate(col_vals):
+            for i, space in enumerate(col_vals):
                 if space == 0:
-                    Color(0.9,0.9,0.9)
+                    Color(0.9, 0.9, 0.9)
                 else:
                     Color(*(cols[str(space)]))
-                Ellipse(pos=(0,78*i),size=(70,70))
+                Ellipse(pos=(0, 78*i),size=(70, 70))
+
 
 class ConnectFourApp(App):
     def build(self):
@@ -252,6 +263,7 @@ class ConnectFourApp(App):
 
     def restart_game(self):
         self.connectFourGame.reset_game_handler()
+
 
 def main():
     ConnectFourApp().run()

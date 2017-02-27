@@ -106,22 +106,7 @@ class ConnectFour(Widget):
                        {"1": self.players[0].col, "-1": self.players[1].col})
         
         if self.check_win():
-            # Create popup
-            popup_content = BoxLayout(orientation="vertical", size=(250, 200))
-            new_game_btn = Button(size_hint=(1, 0.3), text="New Game")
-            reset_btn = Button(size_hint=(1, 0.3), text="Reset (New Players)")
-
-            popup_content.add_widget(Label(size_hint=(1, 0.4), text="{} won".format(
-                self.players[self.cur_player].name)))
-            popup_content.add_widget(new_game_btn)
-            popup_content.add_widget(reset_btn)
-
-            self.popup = Popup(title="Game Finished", size=(250, 200),
-                               size_hint=(None, None), content=popup_content)
-            new_game_btn.bind(on_press=self.new_game_handler)
-            reset_btn.bind(on_press=self.reset_game_handler)
-            self.popup.open()
-
+            self.game_end_popup("{} won".format(self.players[self.cur_player].name))
             return True
         else:
             # Check for draw
@@ -131,26 +116,31 @@ class ConnectFour(Widget):
                     self.draw = False
 
             if self.draw:
-                print("Draw!")
-                # Create popup
-                popup_content = BoxLayout(orientation="vertical", size=(250, 200))
-                new_game_btn = Button(size_hint=(1, 0.3), text="New Game")
-                reset_btn = Button(size_hint=(1, 0.3), text="Reset (New Players)")
-
-                popup_content.add_widget(Label(size_hint=(1, 0.4), text="Draw".format(
-                    self.players[self.cur_player].name)))
-                popup_content.add_widget(new_game_btn)
-                popup_content.add_widget(reset_btn)
-
-                self.popup = Popup(title="Game Finished", size=(250, 200),
-                                   size_hint=(None, None), content=popup_content)
-                new_game_btn.bind(on_press=self.new_game_handler)
-                reset_btn.bind(on_press=self.reset_game_handler)
-                self.popup.open()
+               self.game_end_popup("Draw")
 
 
         # Change the current player
         self.cur_player = int(not self.cur_player)
+
+    def game_end_popup(self, msg):
+        """
+        Create popup for the end of the game with a message, New game,
+        and Reset game button
+        """
+        popup_content = BoxLayout(orientation="vertical", size=(250, 200))
+        new_game_btn = Button(size_hint=(1, 0.3), text="New Game")
+        reset_btn = Button(size_hint=(1, 0.3), text="Reset (New Players)")
+
+        popup_content.add_widget(Label(size_hint=(1, 0.4), text="{}".format(
+            msg)))
+        popup_content.add_widget(new_game_btn)
+        popup_content.add_widget(reset_btn)
+
+        self.popup = Popup(title="Game Finished", size=(250, 200),
+                           size_hint=(None, None), content=popup_content)
+        new_game_btn.bind(on_press=self.new_game_handler)
+        reset_btn.bind(on_press=self.reset_game_handler)
+        self.popup.open()
 
     def new_game_handler(self, _=None):
         """

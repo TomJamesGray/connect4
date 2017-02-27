@@ -102,8 +102,7 @@ class ConnectFour(Widget):
         print("Board after move: {}".format(self.board))
         
         # Redraw that column with the new values
-        col_obj.redraw(self.board[col_no],
-                       {"1": self.players[0].col, "-1": self.players[1].col})
+        col_obj.redraw(self.board[col_no],self.counter_cols)
         
         if self.check_win():
             self.game_end_popup("{} won".format(self.players[self.cur_player].name))
@@ -165,8 +164,7 @@ class ConnectFour(Widget):
         self.board = [[0]*6 for x in range(7)]
         # Loop through columns in GameBoard and redraw them
         for col in self.game_board.columns:
-            col.redraw([0]*6,
-                       {"1": self.players[0].col, "-1": self.players[1].col})
+            col.redraw([0]*6)
 
         self.cur_player = 0
 
@@ -183,8 +181,7 @@ class ConnectFour(Widget):
         # Reset Board
         self.board = [[0]*6 for x in range(7)]
         for col in self.game_board.columns:
-            col.redraw([0]*6,
-                       {"1": self.players[0].col, "-1": self.players[1].col})
+            col.redraw([0]*6)
         
         # Re-enable and clear text inputs
         self.player_1_name.disabled = False
@@ -203,6 +200,7 @@ class ConnectFour(Widget):
         # Create Players
         self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), 1),
                         Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), -1)]
+        self.counter_cols = {"1": self.players[0].col, "-1": self.players[1].col}
         # Disable text inputs and start game button
         self.player_1_name.disabled = True
         self.player_2_name.disabled = True
@@ -259,7 +257,7 @@ class Column(Widget):
         if self.collide_point(touch.x,touch.y):
             connectFourGame.make_move(self.col_no,self)
 
-    def redraw(self, col_vals, cols):
+    def redraw(self, col_vals, cols=None):
         self.canvas.clear()
         with self.canvas:
             for i, space in enumerate(col_vals):

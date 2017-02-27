@@ -161,6 +161,7 @@ class ConnectFour(Widget):
         self.player_2_name.disabled = False
         self.player_2_name.text = ""
         self.start_game_btn.disabled = False
+        self.games_won_label.text = "0 v 0"
         self.players = []
         self.cur_player = 0
 

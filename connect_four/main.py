@@ -28,7 +28,7 @@ def get_first_available(col):
     return False
 
 
-def get_n_by_n(a,top_x,top_y,n):
+def get_n_by_n(a, top_x, top_y, n):
     """
     Gets an n by n 2d list from another 2d list
     """
@@ -45,7 +45,7 @@ def rgb_max_1(rgb):
 
 
 class Player(object):
-    def __init__(self,name,col,point_score):
+    def __init__(self, name, col, point_score):
         self.name = name
         self.col = col
         self.point_score = point_score
@@ -56,8 +56,8 @@ class GameBoard(Widget):
     """
     Container widget for the Columns of the board
     """
-    def __init__(self,**kwargs):
-        super(GameBoard,self).__init__(**kwargs)
+    def __init__(self, **kwargs):
+        super(GameBoard, self).__init__(**kwargs)
 
         self.columns = [None]*7
         for i in range(7):
@@ -81,7 +81,7 @@ class ConnectFour(Widget):
     start_game_btn = ObjectProperty(None)
     game_board = ObjectProperty(None)
 
-    def make_move(self,col_no,col_obj):
+    def make_move(self, col_no, col_obj):
         """
         Makes a move on the board. Takes the column number and a
         reference to the column as parameters
@@ -123,6 +123,32 @@ class ConnectFour(Widget):
             self.popup.open()
 
             return True
+        else:
+            # Check for draw
+            self.draw = True
+            for col in self.board:
+                if 0 in col:
+                    self.draw = False
+
+            if self.draw:
+                print("Draw!")
+                # Create popup
+                popup_content = BoxLayout(orientation="vertical", size=(250, 200))
+                new_game_btn = Button(size_hint=(1, 0.3), text="New Game")
+                reset_btn = Button(size_hint=(1, 0.3), text="Reset (New Players)")
+
+                popup_content.add_widget(Label(size_hint=(1, 0.4), text="Draw".format(
+                    self.players[self.cur_player].name)))
+                popup_content.add_widget(new_game_btn)
+                popup_content.add_widget(reset_btn)
+
+                self.popup = Popup(title="Game Finished", size=(250, 200),
+                                   size_hint=(None, None), content=popup_content)
+                new_game_btn.bind(on_press=self.new_game_handler)
+                reset_btn.bind(on_press=self.reset_game_handler)
+                self.popup.open()
+
+
         # Change the current player
         self.cur_player = int(not self.cur_player)
 
@@ -132,12 +158,18 @@ class ConnectFour(Widget):
         parameter as the button instance is by default passed to it
         """
         self.popup.dismiss()
-        self.players[self.cur_player].games_won += 1
-        
         # Update games won string in form "0 v 0"
         current_str = self.games_won_label.text
         old_games_won = [int(x.strip()) for x in current_str.split("v")]
-        old_games_won[self.cur_player] = self.players[self.cur_player].games_won
+
+        if self.draw:
+            for i in range(2):
+                self.players[i].games_won += 1
+                old_games_won[i] += 1
+        else:
+            self.players[self.cur_player].games_won += 1
+            old_games_won[self.cur_player] = self.players[self.cur_player].games_won
+
         self.games_won_label.text = "{} v {}".format(old_games_won[0],old_games_won[1])
         # Reset Board
         self.board = [[0]*6 for x in range(7)]

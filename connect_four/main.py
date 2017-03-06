@@ -1,4 +1,5 @@
 import kivy
+import copy
 from kivy.config import Config
 Config.set('graphics','resizable',0)
 from kivy.app import App
@@ -45,9 +46,10 @@ def rgb_max_1(rgb):
 
 
 class Player(object):
-    def __init__(self, name, col, point_score):
+    def __init__(self, name, col, hover_col, point_score):
         self.name = name
         self.col = col
+        self.hover_col = hover_col
         self.point_score = point_score
         self.games_won = 0
 
@@ -95,7 +97,7 @@ class ConnectFour(Widget):
             # Column is full up
             print("Move can't be made")
             return False
-        
+
         # Set the board element
         self.board[col_no][space_index] = self.players[
                 self.cur_player].point_score
@@ -120,6 +122,29 @@ class ConnectFour(Widget):
 
         # Change the current player
         self.cur_player = int(not self.cur_player)
+
+    def make_hover(self, col_no, col_obj):
+        """
+        Implements a hovered state for the column. Does not affect the
+        actual board used for win checking, etc
+        """
+        if self.players == []:
+            # Players haven't been initialised
+            return False
+        # Copy the game board so the hovered state doesn't affect the win checking
+        temp_col = copy.copy(self.board[col_no])
+        index = get_first_available(temp_col)
+        temp_col[index] = self.players[self.cur_player].point_score*2
+        col_obj.redraw(temp_col,self.counter_cols)
+
+    def undo_hover(self, col_no, col_obj):
+        """
+        Undoes the hovered state of the column, by redrawing it
+        """
+        if self.players == []:
+            # Players haven't been initialised
+            return False
+        col_obj.redraw(self.board[col_no],self.counter_cols)
 
     def game_end_popup(self, msg):
         """
@@ -198,9 +223,10 @@ class ConnectFour(Widget):
         Handles the start game button and creates the player objects
         """
         # Create Players
-        self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), 1),
-                        Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), -1)]
-        self.counter_cols = {"1": self.players[0].col, "-1": self.players[1].col}
+        self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), rgb_max_1((100,10,10)), 1),
+                        Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), rgb_max_1((100,100,10)), -1)]
+        self.counter_cols = {"1": self.players[0].col, "-1": self.players[1].col,
+                             "2": self.players[0].hover_col, "-2": self.players[1].hover_col}
         # Disable text inputs and start game button
         self.player_1_name.disabled = True
         self.player_2_name.disabled = True
@@ -250,12 +276,25 @@ class ConnectFour(Widget):
 class Column(Widget):
     def __init__(self, **kwargs):
         super(Column, self).__init__(**kwargs)
+        Window.bind(mouse_pos=self.on_mouse_pos)
         self.redraw([0]*6, [None])
+        self.hovered = False
 
     def on_touch_down(self, touch):
         global connectFourGame
         if self.collide_point(touch.x,touch.y):
             connectFourGame.make_move(self.col_no,self)
+
+    def on_mouse_pos(self, *args):
+        global connectFourGame
+        pos = args[1]
+        if self.collide_point(*self.to_widget(*pos)):
+            self.hovered = True
+            # Hovered over this column
+            connectFourGame.make_hover(self.col_no,self)
+        elif self.hovered:
+            self.hovered = False
+            connectFourGame.undo_hover(self.col_no,self)
 
     def redraw(self, col_vals, cols=None):
         self.canvas.clear()
@@ -273,7 +312,7 @@ class ConnectFourApp(App):
         global connectFourGame
         connectFourGame = ConnectFour()
         self.connectFourGame = connectFourGame
-        #inspector.create_inspector(Window,connectFourGame)
+        inspector.create_inspector(Window,connectFourGame)
         Window.clearcolor=(0.9,0.9,0.9,1)
         Window.size=(800,500)
         return self.connectFourGame

@@ -223,8 +223,8 @@ class ConnectFour(Widget):
         Handles the start game button and creates the player objects
         """
         # Create Players
-        self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), rgb_max_1((100,10,10)), 1),
-                        Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), rgb_max_1((100,100,10)), -1)]
+        self.players = [Player(self.player_1_name.text, rgb_max_1((221, 63, 63)), rgb_max_1((221,141,141)), 1),
+                        Player(self.player_2_name.text, rgb_max_1((222, 226, 55)), rgb_max_1((224,226,136)), -1)]
         self.counter_cols = {"1": self.players[0].col, "-1": self.players[1].col,
                              "2": self.players[0].hover_col, "-2": self.players[1].hover_col}
         # Disable text inputs and start game button

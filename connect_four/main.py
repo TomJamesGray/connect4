@@ -134,6 +134,10 @@ class ConnectFour(Widget):
         # Copy the game board so the hovered state doesn't affect the win checking
         temp_col = copy.copy(self.board[col_no])
         index = get_first_available(temp_col)
+
+        if index == False and isinstance(index,bool):
+            # Move can't be made
+            return False
         temp_col[index] = self.players[self.cur_player].point_score*2
         col_obj.redraw(temp_col,self.counter_cols)
 

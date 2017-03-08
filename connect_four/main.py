@@ -14,8 +14,6 @@ from kivy.uix.popup import Popup
 from kivy.graphics import *
 from kivy.properties import NumericProperty,ListProperty,DictProperty,ObjectProperty
 
-# global connectFourGame
-
 
 def get_first_available(col):
     """
@@ -200,7 +198,7 @@ class ConnectFour(Widget):
     def reset_game_handler(self, _=None):
         """
         Handle the reset game button on the win popup and main
-        screen, has *optional* parameter as the bytton instance
+        screen, has *optional* parameter as the button instance
         is passed to it
         """
         if hasattr(self,'popup'):
@@ -283,38 +281,29 @@ class Column(Widget):
         Window.bind(mouse_pos=self.on_mouse_pos)
         self.redraw([0]*6, [None])
         self.hovered = False
-        # print(self.get_root_window())
         self.connectFourGame = None
 
     def get_game(self):
         if self.connectFourGame == None:
             # Get make move function from connectFourGame
-            print(self.get_root_window().children)
             for child in self.get_root_window().children:
                 if isinstance(child, ConnectFour):
                     self.connectFourGame = child
                     break
-                else:
-                    print("No Connect Four widget found")
         return self.connectFourGame
 
     def on_touch_down(self, touch):
-        # global connectFourGame
-
         if self.collide_point(touch.x,touch.y):
             self.get_game().make_move(self.col_no,self)
-            # self.make_move()
 
     def on_mouse_pos(self, *args):
         pos = args[1]
         if self.collide_point(*self.to_widget(*pos)):
             self.hovered = True
             # Hovered over this column
-            # connectFourGame.make_hover(self.col_no,self)
             self.get_game().make_hover(self.col_no,self)
         elif self.hovered:
             self.hovered = False
-            # connectFourGame.undo_hover(self.col_no,self
             self.get_game().undo_hover(self.col_no,self)
 
     def redraw(self, col_vals, cols=None):
@@ -330,7 +319,6 @@ class Column(Widget):
 
 class ConnectFourApp(App):
     def build(self):
-        global connectFourGame
         connectFourGame = ConnectFour()
         self.connectFourGame = connectFourGame
         inspector.create_inspector(Window,connectFourGame)

@@ -1,4 +1,3 @@
-import kivy
 import copy
 from kivy.config import Config
 Config.set('graphics','resizable',0)
@@ -211,11 +210,9 @@ class ConnectFour(Widget):
             col.redraw([0]*6)
         
         # Re-enable and clear text inputs
-        self.player_1_name.disabled = False
+        self.set_inputs_state(False)
         self.player_1_name.text = ""
-        self.player_2_name.disabled = False
         self.player_2_name.text = ""
-        self.start_game_btn.disabled = False
         self.games_won_label.text = "0 v 0"
         self.players = []
         self.cur_player = 0
@@ -230,9 +227,17 @@ class ConnectFour(Widget):
         self.counter_cols = {"1": self.players[0].col, "-1": self.players[1].col,
                              "2": self.players[0].hover_col, "-2": self.players[1].hover_col}
         # Disable text inputs and start game button
-        self.player_1_name.disabled = True
-        self.player_2_name.disabled = True
-        self.start_game_btn.disabled = True
+        self.set_inputs_state(True)
+
+    def set_inputs_state(self, state):
+        """
+        Sets the disabled property to state for player name entries
+        and start game button
+        :return:
+        """
+        self.player_1_name.disabled = state
+        self.player_2_name.disabled = state
+        self.start_game_btn = state
 
     def check_win(self):
         """

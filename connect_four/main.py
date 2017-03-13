@@ -163,7 +163,7 @@ class ConnectFour(Widget):
         popup_content.add_widget(reset_btn)
 
         self.popup = Popup(title="Game Finished", size=(250, 200),
-                           size_hint=(None, None), content=popup_content)
+                           size_hint=(None, None), content=popup_content, auto_dismiss=False)
         new_game_btn.bind(on_press=self.new_game_handler)
         reset_btn.bind(on_press=self.reset_game_handler)
         self.popup.open()

@@ -92,13 +92,11 @@ class ConnectFour(Widget):
         space_index = get_first_available(self.board[col_no])
         if space_index == False and isinstance(space_index,bool):
             # Column is full up
-            print("Move can't be made")
             return False
 
         # Set the board element
         self.board[col_no][space_index] = self.players[
                 self.cur_player].point_score
-        print("Board after move: {}".format(self.board))
         
         # Redraw that column with the new values
         col_obj.redraw(self.board[col_no],self.counter_cols)

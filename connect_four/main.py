@@ -321,6 +321,7 @@ class Column(Widget):
 
 class ConnectFourApp(App):
     def build(self):
+        self.title = "Connect Four"
         connectFourGame = ConnectFour()
         self.connectFourGame = connectFourGame
         inspector.create_inspector(Window,connectFourGame)

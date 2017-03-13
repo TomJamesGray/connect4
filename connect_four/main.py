@@ -11,7 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.popup import Popup
 from kivy.graphics import *
-from kivy.properties import NumericProperty,ListProperty,DictProperty,ObjectProperty
+from kivy.properties import NumericProperty,ListProperty,ObjectProperty
 
 
 def get_first_available(col):
@@ -173,19 +173,14 @@ class ConnectFour(Widget):
         parameter as the button instance is by default passed to it
         """
         self.popup.dismiss()
-        # Update games won string in form "0 v 0"
-        current_str = self.games_won_label.text
-        old_games_won = [int(x.strip()) for x in current_str.split("v")]
 
         if self.draw:
             for i in range(2):
                 self.players[i].games_won += 1
-                old_games_won[i] += 1
         else:
             self.players[self.cur_player].games_won += 1
-            old_games_won[self.cur_player] = self.players[self.cur_player].games_won
+        self.games_won_label.text = "{} v {}".format(self.players[0].games_won, self.players[1].games_won)
 
-        self.games_won_label.text = "{} v {}".format(old_games_won[0],old_games_won[1])
         # Reset Board
         self.board = [[0]*6 for x in range(7)]
         # Loop through columns in GameBoard and redraw them
@@ -233,7 +228,6 @@ class ConnectFour(Widget):
         """
         Sets the disabled property to state for player name entries
         and start game button
-        :return:
         """
         self.player_1_name.disabled = state
         self.player_2_name.disabled = state
@@ -277,18 +271,22 @@ class ConnectFour(Widget):
                     elif diag == -4:
                         return self.players[1]
         return False
-    pass
 
 
 class Column(Widget):
     def __init__(self, **kwargs):
         super(Column, self).__init__(**kwargs)
         Window.bind(mouse_pos=self.on_mouse_pos)
+        # Draw Column with zeros, so the spaces will all be white on start
         self.redraw([0]*6, [None])
         self.hovered = False
         self.connectFourGame = None
 
     def get_game(self):
+        """
+        Finds the main ConnectFour widget if the property isn't set and returns it.
+        Needed for hover states and mouse presses, to access the game board
+        """
         if self.connectFourGame == None:
             # Get make move function from connectFourGame
             for child in self.get_root_window().children:
@@ -308,6 +306,7 @@ class Column(Widget):
             # Hovered over this column
             self.get_game().make_hover(self.col_no,self)
         elif self.hovered:
+            # Remove the hovered state as mouse is no longer on this col
             self.hovered = False
             self.get_game().undo_hover(self.col_no,self)
 

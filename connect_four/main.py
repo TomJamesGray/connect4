@@ -1,12 +1,12 @@
 import copy
 from kivy.config import Config
 Config.set('graphics','resizable',0)
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
-from kivy.modules import inspector
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.popup import Popup
@@ -294,7 +294,7 @@ class Column(Widget):
         return self.connectFourGame
 
     def on_touch_down(self, touch):
-        if self.collide_point(touch.x,touch.y):
+        if self.collide_point(touch.x,touch.y) and touch.button == "left":
             self.get_game().make_move(self.col_no,self)
 
     def on_mouse_pos(self, *args):
@@ -324,7 +324,6 @@ class ConnectFourApp(App):
         self.title = "Connect Four"
         connectFourGame = ConnectFour()
         self.connectFourGame = connectFourGame
-        inspector.create_inspector(Window,connectFourGame)
         Window.clearcolor=(0.9,0.9,0.9,1)
         Window.size=(800,500)
         return self.connectFourGame

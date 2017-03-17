@@ -61,7 +61,7 @@ class GameBoard(Widget):
         self.columns = [None]*7
         for i in range(7):
             container = Widget()
-            layout = RelativeLayout(size=(78, 460), pos=(248+78*i, 20))
+            layout = RelativeLayout(size=(77, 460), pos=(248+78*i, 20))
             self.columns[i] = Column()
             self.columns[i].col_no = i
             layout.add_widget(self.columns[i])

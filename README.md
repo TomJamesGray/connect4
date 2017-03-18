@@ -1,2 +1,3 @@
-# connect4
-Connect 4 school project
+# Connect Four
+
+![Connect Four Game](1.png)
